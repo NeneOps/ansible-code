@@ -1,0 +1,38 @@
+---
+- hosts: ws
+  become: yes
+  gather_facts: yes
+  vars:
+    user_name: neneoptions
+    group: Terraform
+  vars_files:
+    - variables.yml
+
+  tasks:
+    - name: Check Server uptime
+      command: "{{my_command}}"
+      register: my_upt
+      ignore_errors: yes
+    - name: list directory
+      shell: ls
+    - name: check the kernel version
+      command: uname -r
+      register: kernel_output
+
+    - name: create user
+      user:
+        name: "{{user_name}}"
+
+    - name: create group
+      group:
+        name: "{{group}}"
+
+    - name: Read data
+      debug:
+        var: my_upt.stdout
+
+    - name: Read another data
+      debug:
+        var: kernel_output.stdout
+        
+      

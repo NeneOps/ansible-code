@@ -1,0 +1,22 @@
+---
+- hosts: ws
+  become: yes
+  gather_facts: yes
+  ignore_errors: True
+
+  tasks:
+    - name: Package Install
+      yum:
+        name: "{{item}}"
+        state: present
+      loop:
+          - wget
+          - vim
+          - docker
+          - httpd
+          - curl
+
+    - name: downlaod file online
+      get_url:
+        url: "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.17.3.tar.xz"
+        dest: "/tmp/linux-6.17.3.tar.xz"

@@ -1,0 +1,69 @@
+---
+- hosts: all
+  become: true
+
+  gather_facts: yes
+
+  tasks:
+    - name: Install nginx on Ubuntu Server
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+      tags:
+        - apt_get
+      when: ansible_os_family=='Debian'
+    
+    - name: Install nginx on RedHat Server
+      package:
+        name: nginx
+        state: present
+      when: ansible_os_family=='RedHat'
+
+    - name: Start daemon on RedHat
+      service:
+        name: nginx
+        state: started
+        enabled: true
+      when: ansible_os_family=="RedHat"
+
+    - name: Create a user
+      user:
+        name: John
+        comment: John Henry
+        shell: /bin/bash
+
+    - name: Create Group
+      group:
+        name: cloudteam
+        state: present
+
+    - name: Create a directory
+      file:
+        path: /var/www/html/
+        state: directory
+
+    - name: Set web root path based on OS
+      set_fact:
+        nginx_webroot: "{{ '/var/www/html' if ansible_os_family == 'Debian' else '/usr/share/nginx/html' }}"    
+
+    - name: Create directory
+      file:
+        path: "{{nginx_webroot}}"
+        state: directory
+
+    - name: Create an index file
+      file:
+        path: "{{nginx_webroot}}/index.html"  
+        state: touch    
+      register: file_output
+
+    - name:
+      debug:
+        var: file_output
+
+    - name: Copy content to index
+      copy:
+        dest: "{{nginx_webroot}}/index.html"
+        content: "This was written with Ansible" 
+

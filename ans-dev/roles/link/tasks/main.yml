@@ -1,0 +1,5 @@
+---
+- name: Download Package
+  get_url:
+    url: "{{my_url}}"
+    dest: "{{dest_path}}"
