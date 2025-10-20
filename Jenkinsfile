@@ -13,7 +13,7 @@ pipeline{
         stage('Upload Artifact to JFrog'){
             steps{
                 sh 'curl -uadmin:AP7iKibFPukTLYzjaqQWMbvj12T -T \
-                ansible-${BUILD_ID}.zip "http://54.91.55.104:8081/artifactory/Ansible-repo/ansible-${BUILD_ID}.zip"'
+                ansible-${BUILD_ID}.zip "http://54.226.209.71:8081/artifactory/Ansible-repo/ansible-${BUILD_ID}.zip"'
             }
         }
 
@@ -21,7 +21,8 @@ pipeline{
             steps{
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'Ansibleserver',\
                  transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: \
-                  'unzip ansible-${BUILD_ID}.zip; rm -rf ansible-${BUILD_ID}.zip', execTimeout: 120000, flatten: false, makeEmptyDirs: false, \
+                  'unzip ansible-${BUILD_ID}.zip; rm -rf ansible-${BUILD_ID}.zip', execTimeout: 120000,\
+                   flatten: false, makeEmptyDirs: false, \
                    noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: \
                     '.', remoteDirectorySDF: false, removePrefix: '', sourceFiles:\
                      'ansible-${BUILD_ID}.zip')], usePromotionTimestamp: false,\
