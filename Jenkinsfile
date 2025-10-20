@@ -15,5 +15,17 @@ pipeline{
                 ansible-${BUILD_ID}.zip "http://54.91.55.104:8081/artifactory/Ansible-repo/ansible-${BUILD_ID}.zip"'
             }
         }
+
+        stage('Publish over SSH'){
+            steps{
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'Ansibleserver',\
+                 transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: \
+                  'ls', execTimeout: 120000, flatten: false, makeEmptyDirs: false, \
+                   noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: \
+                    '/home/ubuntu', remoteDirectorySDF: false, removePrefix: '', sourceFiles:\
+                     'ansible-${BUILD_ID}.zip')], usePromotionTimestamp: false,\
+                      useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
     }
 }
