@@ -1,16 +1,16 @@
 ---
-- host: ws
+- hosts: ws
   become: yes
   tasks:
     - name: Install Packages
-      apt:
+      package:
         state: present
         name:
         - lsof
         - wget
-        - docker
+        - docker.io
         - unzip
-        - java-11*
+        - curl
     
     - name: Create a directory
       file:
@@ -25,8 +25,8 @@
         path: /opt/qa/spg/spg.log
     
     - name: Start and enable daemon
-      systemd_service:
-        name: docker
+      systemd:
+        name: docker.io
         state: started
         enabled: yes
         
