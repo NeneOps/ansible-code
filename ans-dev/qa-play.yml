@@ -12,7 +12,7 @@
         - unzip
         - java-11*
     
-    - name: Create directory
+    - name: Create a directory
       file:
         state: directory
         path: /opt/qa/spg
