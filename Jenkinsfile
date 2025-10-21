@@ -17,7 +17,7 @@ pipeline{
             }
         }
 
-        stage('Publish to Ansible Server'){
+        stage('Publish over ssh to Ansible Server'){
             steps{
                 sshPublisher(publishers: [sshPublisherDesc(configName: 'Ansibleserver',\
                  transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: \
