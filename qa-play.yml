@@ -1,0 +1,32 @@
+---
+- host: ws
+  become: yes
+  tasks:
+    - name: Install Packages
+      apt:
+        state: present
+        name:
+        - lsof
+        - wget
+        - docker
+        - unzip
+        - java-11*
+    
+    - name: Create directory
+      file:
+        state: directory
+        path: /opt/qa/spg
+        mode: '0755'
+        
+
+    - name: Create log file
+      file:
+        state: touch
+        path: /opt/qa/spg/spg.log
+    
+    - name: Start and enable daemon
+      systemd_service:
+        name: docker
+        state: started
+        enabled: yes
+        
